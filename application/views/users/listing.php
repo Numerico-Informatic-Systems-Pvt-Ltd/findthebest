@@ -65,15 +65,20 @@
                             <span class="pull-left">Sorted by&nbsp;</span>
 
                             <div class="category_drop">
-                                <select class="form-control" id="sorting_input" onchange="return sorting(<?php echo $category_info->id; ?>,this.value)">
-                                	<option value='0'>No Sort Selected</option>
-                                    <?php foreach($all_attributes as $all_attrs):
-                                    echo "<option value='$all_attrs->id'>".$all_attrs->name."</option>";
-                                    endforeach;
-                                    ?>  
+                                <select class="form-control">
+                                    <option>Brand and Model</option>
+                                    <option>Style</option>
+                                    <option>Average User Rating</option>
+                                    <option selected="selected">Smart Rating</option>
+                                    <option>Price</option>
+                                    <option>Impedance</option>
+                                    <option>Sensitivity</option>
+                                    <option>Category</option>
+                                    <option>Frequency (Low)</option>
+                                    <option>Frequency (High)</option>
                                 </select>
                             </div>
-                            <button type="button" id="order" class="btn btn-default pull-left" value="ASC" onclick="return sorting_order(<?php echo $category_info->id; ?>,this.value)">High to low</button>
+                            <button type="submit" class="btn btn-default pull-left">How to low</button>
 
                             <span class="pull-left">Viewing&nbsp;</span>
                             <div class="category_drop">
@@ -171,38 +176,22 @@
                             </select>
 
                             <input type="text" class="form-control category_search" placeholder="Search">
-                <?php
-					$attribute_arr_jquery_set = 0;
-					$attribute_arr_jquery = "";
-					foreach ($attributes as $attribute) {
-						if($attribute_arr_jquery_set == 0){
-							$attribute_arr_jquery .= $attribute[0]->attr_id;
-						}else{
-							$attribute_arr_jquery .= ",".$attribute[0]->attr_id;
-						}
-						$attribute_arr_jquery_set++;
-				
-				?>
+                                        <?php foreach ($attributes as $attribute) { ?>
                                     <div class="category_menu">
                                         <h3><?php echo $attribute ? $attribute[0]->name : ''; ?></h3>
                                         <form action="" method="post" class="pull-right">
-                                        <input type = "text" id = "attribute_id_<?php echo $attribute[0]->attr_id; ?>" value = " ">
     <?php foreach ($attribute as $attr) { ?>
                                                 <div class="checkbox">
                                                     <label>
                                                         <span class="rt_check"><?php echo $attr->attr_value; ?></span>
-                                                        <input type = "checkbox" class = "clickAttiValue" onclick="return clickAttiValue(<?php echo $attr->attr_id; ?>, <?php echo $attr->id; ?>);" value = " " id = "attri_<?php echo $attr->id; ?>" >
-                                                        <!--<input type="checkbox" class="attribute" catg=<?= $category_info->id ?> attr="<?= $attr->attr_id ?>" id="attribute_<?= $attr->attr_id ?>" value="<?php echo $attr->id; ?>" aria-label="Earbud">-->
-                                                            
+                                                        <input type="checkbox" class="attribute" catg=<?= $category_info->id ?> attr="<?= $attr->attr_id ?>" id="attribute_<?= $attr->attr_id ?>" value="<?php echo $attr->id; ?>" aria-label="Earbud">
+                                                          
                                                     </label>
                                                 </div>
     <?php } ?>
                                         </form>
-                                        
                                     </div>  
 <?php } ?>
-									<input type = "text" id = "category_id" value = "<?php echo $category_info->id; ?>">
-                                    <input type = "text" id = "all_attribute" value = "<?php echo $attribute_arr_jquery; ?>">
                                 <div class="clearfix"></div>
 
                         </div>
@@ -382,56 +371,10 @@
         });
     });
 
-/*$( ".clickAttiValue" ).click(function() {
-	alert( "Hi suman" );
-});*/
-
-function clickAttiValue( attribute_category, attribute ){
-	
-	var totalStr = $("#attribute_id_"+attribute_category).val();
-	var all_attribute = $("#all_attribute").val();
-    var set = 1;
-    if(totalStr != ""){
-        var resArr = totalStr.split(",");
-        for(i=0; i<resArr.length; i++){
-            if(resArr[i] == attribute ){
-                set = 2;
-            }
-        }
-        if(set == 1){
-            var attribute = totalStr + ',' + attribute;
-        }else{
-            var attribute = totalStr.replace(attribute, "");
-        }
-    }
-	var attribute_data = new Array();
-	$("#attribute_id_"+attribute_category).val(attribute);
-	if(all_attribute != ""){
-        var all_attributeArr = all_attribute.split(",");
-        for(j=0; j<all_attributeArr.length; j++){
-			var part_attribute = all_attributeArr[j];
-			arr = $("#attribute_id_"+part_attribute).val();
-			attribute_data[part_attribute] = arr;
-        }
-    }
-	var catg = $("#category_id").val();
-	$.ajax({
-        url: "<?php echo base_url('products/attributes_search'); ?>",
-        type: "POST",
-        data: {
-            attr_value: attribute_data,
-			catg: catg,
-        },
-        success: function(response){
-            alert(response);
-            //$('#product_display').html(response);
-        }
-    });
-	
-}
 
 
-/*$('input[id^="attribute_"]').not('#attribute_all').click(function () {
+
+$('input[id^="attribute_"]').not('#attribute_all').click(function () {
     $('#attribute_all').prop('checked', false);
     var attr_value = $(this).attr("value");
     var attr_id = $(this).attr("attr");
@@ -449,57 +392,7 @@ function clickAttiValue( attribute_category, attribute ){
     });
     return false;   
 
-});*/
-
-function sorting(catg,attribute_id){
-var order = $('#order').val();
-//alert(attribute_id);
-$.ajax({
-        url: "<?php echo base_url('products/get_sorted_products'); ?>",
-        type: "POST",
-        data: {
-            category: catg,attribute:attribute_id,order : order
-        },
-        success: function(response){
-            //alert(response);
-            $('#product_display').html(response);
-            if(order == 'ASC'){
-                 $('#order').val("DESC");
-                 $('#order').text("Low to High");
-            }else{
-                $('#order').val("ASC");
-                $('#order').text("High to Low")
-            }
-            
-        }
-    });
-    return false;   
-}
-function sorting_order(catg,order){
-    var attribute_id = $('#sorting_input').val();
-    $.ajax({
-        url: "<?php echo base_url('products/get_sorted_products'); ?>",
-        type: "POST",
-        data: {
-            category: catg,attribute:attribute_id,order : order
-        },
-        success: function(response){
-            //alert(response);
-            $('#product_display').html(response);
-            if(order == 'ASC'){
-                 $('#order').val("DESC");
-                 $('#order').text("Low to High");
-            }else{
-                $('#order').val("ASC");
-                $('#order').text("High to Low")
-            }
-        }
-    });
-    return false;  
-}
+});
 
 
 </script>
-
-
-		<!--		product search	not done fully.have to include attibute category value. 		-->

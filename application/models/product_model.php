@@ -54,51 +54,29 @@ Class product_model extends CI_Model{
         $result = $query->first_row();
         return $result;
     }
-    function search_by_attribute( $catg, $value ){
-        $sql="select A.*,P.* from products P LEFT JOIN product_attributes A ON A.prd_id = P.id where P.catg_id='".$catg."' ";
-		
-		$d = 0;
-		foreach( $value as $attr_id => $attr_value ){
-			if($attr_value){
-				if( $d>0 ){
-					$sql .= " OR ";
-				}else{
-					$sql .= " AND ( ";
-				}
-				$d++;
-				$sql .= "  ( A.attr_id = '".$attr_id."' AND ( ";
-				$attr_exp_value = explode( "," , $attr_value);
-				$c = 0;
-				foreach($attr_exp_value as $attr){
-					if($attr){
-						if($c>0){
-							$sql .= " OR ";
-						}
-						$sql .= " attr_value = '".$attr."' ";
-						$c++;
-					}
-				}
-				$sql .= ") ) ";
-			}
-			
-		}
-		$sql .= " ) GROUP BY p.id";
-		//echo $sql; exit;
+    function search_by_attribute($catg,$id,$value){
+        $sql="select A.*,P.* from products P LEFT JOIN product_attributes A ON A.prd_id = P.id where P.catg_id='".$catg."' AND A.attr_id='".$id."' AND  attr_value LIKE '%".$value."%'"; 
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
     }
-	
-	function product_sorting($category,$input = NULL,$order){
-        if($input){
-        $sql = "select P.*,AV.attr_value as attribute,A.* from product_attributes A LEFT JOIN attribute_values AV ON AV.id=A.attr_value LEFT JOIN products P ON P.id=A.prd_id where P.catg_id='".$category."' AND A.attr_id='".$input."' ORDER BY AV.attr_value $order";
+    
+    function getReviewDetails($pid){
+        $sql = "SELECT * FROM review AS re INNER JOIN visitors AS vi ON vi.id = re.visitor_id WHERE product_id='".$pid."' ORDER BY re.id DESC LIMIT 5 ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows()) {
+            foreach ($query->result() as $row) {
+                $result[$row->id] = $row;
+            }
+            $query->free_result();
+            return $result;
         }
-        else{
-          $sql = "select P.* from products as P LEFT JOIN category as C ON C.id = P.catg_id where P.catg_id='".$category."' order by P.id $order";
-        
-        }
-        $query=$this->db->query($sql);
-        $result = $query->result();
+        return $result;
+    }
+    function getAvgReview($pid){
+        $sql = "SELECT (sum(rate)/count(product_id)) AS avgrate,sum(rate) AS totalrate FROM review WHERE product_id='".$pid."' GROUP BY product_id";
+        $query = $this->db->query($sql);
+        $result = $query->first_row();
         return $result;
     }
 }

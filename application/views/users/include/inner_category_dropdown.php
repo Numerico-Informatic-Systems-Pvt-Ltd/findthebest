@@ -1,3 +1,6 @@
+<?php $this->load->view('users/include/userjoin.php'); ?> 
+<?php $this->load->view('users/include/usersignin.php'); ?> 
+
 <nav role="navigation" class="navbar navbar-default" id="inner_menu">
     <div class="container">
         <div class="navbar-header">
@@ -100,10 +103,14 @@
         </form>
 
     </div>
-
+<?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?> 
     <div class="inner_right_nav">
-        <div class="join">+Join</div>
-        <div class="sign">Sign In</div>
+        <div class="join" data-toggle="modal" data-target="#myModal">+Join</div>
+        <?php if($this->session->userdata('userdata')){?>
+        <div class="sign" data-toggle="modal" data-target=""><a href="/logout/UserLogout?pagelink=<?php echo $actual_link;?>" style="color:#000; text-decoration: none;">Logout</a></div>
+        <?php }else {?>
+        <div class="sign" data-toggle="modal" data-target="#myModal2">Sign In</div>
+        <?php }?>
         <div class="clearfix"></div>
     </div>
 </nav>  

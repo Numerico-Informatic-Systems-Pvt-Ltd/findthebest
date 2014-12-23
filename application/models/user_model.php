@@ -145,6 +145,23 @@ Class user_model extends CI_Model {
         }
 
     }
+    
+    function loginUser($userdata){
+        $email = $userdata['email'];
+        $password = $userdata['password'];
+        $sql = 'SELECT * FROM visitors WHERE email = "' . $email . '" and password = "' . $password . '"';
+        $query = $this->db->query($sql);
+        if ($query->num_rows()) {
+            foreach ($query->result() as $row) {
+                $result['id'] = $row->id;
+                $result['name'] = $row->name;
+                $result['email'] = $row->email;
+                $result['status'] = $row->status;
+            }
+            $query->free_result();
+            return $result;
+        }
+    }
 
 }
 

@@ -98,12 +98,14 @@
                         if (isset($attribute)) {
                             foreach ($attribute as $attr) {
                                 ?>
-                                <tr>
+                                <tr >
                                     <td><?php echo $attr->name; ?></td>
                                     <td style="width:70px;">
                                         <a href="<?php echo base_url('attribute/manageAttribute'); ?>/<?php echo $attr->id; ?>" ><img src = "<?php echo base_url() . 'images/edit.png' ?>" alt="Edit" height="30" width="30"></a>
                                         <a href="<?php echo base_url('common/isDeleted'); ?>/<?php echo $attr->id; ?>/category/category/viewCategory" ><img src = "<?php echo base_url() . 'images/delete.png' ?>" alt="Delete" height="30" width="30"></a>
                                     </td>
+
+
                                 </tr>
 
                                 <?php
@@ -136,33 +138,6 @@
                         );
                         echo form_input($attributes);
                         echo form_error('new_attribute', '<span class="req">', '</span>');
-                        ?>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label"><?php echo $this->lang->line("attribure")." ".$this->lang->line("type")." ".$this->lang->line("attribute"); ?> </label>
-                    <div class="controls">
-                        <select name="type">
-                            <option value="1"><?php echo $this->lang->line("defined");?></option>
-                            <option value="0"><?php echo $this->lang->line("undefined");?></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label"><?php echo $this->lang->line("unit"); ?> </label>
-                    <div class="controls">
-                        <?php
-                        (empty($attr_data)) ? $unit ='': $unit = $attr_data->unit ;
-                        $attributes = array(
-                            'name' => 'unit',
-                            'id' => 'unit',
-                            'size' => '32',
-                            'class' => 'span2 m-wrap',
-                           'value' => $attr_value,
-                        );
-                        echo form_input($attributes);
-                        echo form_error('unit', '<span class="req">', '</span>');
                         ?>
                         <span class="help-inline"></span>
                     </div>

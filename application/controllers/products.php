@@ -14,7 +14,7 @@ class Products extends CI_Controller {
         $this->load->helper('language');
         $this->lang->load('admin', 'english');
         $this->load->model('category_model');
-		$this->load->model('attribute_model');
+	$this->load->model('attribute_model');
         $this->load->model('product_model');
     /*  if (!$this->session->userdata('admin')){ 
             redirect('login');
@@ -91,64 +91,12 @@ class Products extends CI_Controller {
     }
     
      public function attributes_search() {
-		
+        $attr_id = $_POST['attr_id'];
         $attr_value = $_POST['attr_value'];
         $catg_id = $_POST['catg'];
-		//print_r($attr_value); die;
-        $product_list = $this->product_model->search_by_attribute($catg_id, $attr_value);
+        $product_list = $this->product_model->search_by_attribute($catg_id, $attr_id, $attr_value);
 
         foreach ($product_list as $product) {
-            echo "<div class='col-lg-12 less_pad product_list'>
-                	<div class='col-lg-5 less_pad'>
-                    	<div class='product_list_lt'>
-                        	<div class='product_box'>
-                            	<img src='";
-            echo base_url() . "/images/products/$product->thumb_image' alt='$product->name' />
-                            	<p>$product->name</p>
-                            </div>
-                        </div>
-                        <div class='product_list_rt'>
-                        	<p>$product->description</p>
-                            <label class='checkbox-inline'>
-                              <input type='checkbox' id='inlineCheckbox1' value='option1'>Add to Compare
-                            </label>
-                        </div>
-                        <div class='clearfix'></div>
-                        </div>
-                        <div class='col-lg-1 less_pad'>
-                            <a href='#' class='what'>What is this?</a>
-                            <div class='rating_box'>40</div>
-                        </div>
-                        <div class='col-lg-2 less_pad'>
-                            <div class='price'>
-                                    MSRP
-                                <p>$product->price</p>
-                            </div>
-                            <div style='width:70%; margin:0 auto;'><button class='price_btn' type='button'>See Prices</button></div>
-                            <!--<div class='price_btn'>See Prices</div>-->
-                            <div class='clearfix'></div>
-                        </div>
-                        <div class='col-lg-2 less_pad'>
-                            <div class='impedance'><img src='";
-            echo base_url() . "assets/img/imp_img.png' alt='' /></div>
-                        </div>
-                        <div class='col-lg-2 less_pad'>
-                            <div class='sensitivity'><img src='";
-            echo base_url() . "assets/img/sensivity.png' alt='' /></div>
-                        </div>
-                	<div class='clearfix'></div>
-                    </div>";
-        }
-
-        exit;
-    }
-	
-	function get_sorted_products(){
-        $category = $_POST['category'];
-        $input = $_POST['attribute'];
-        $sorted_data = $this->product_model->product_sorting($category,$input);
-        //echo"<pre>";print_r($sorted_data);exit;
-        foreach ($sorted_data as $product) {
             echo "<div class='col-lg-12 less_pad product_list'>
                 	<div class='col-lg-5 less_pad'>
                     	<div class='product_list_lt'>

@@ -1,4 +1,4 @@
-<?php //print_r($product_details);die;?>
+<?php //print_r($product_details);die; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -11,14 +11,26 @@
         <script src="<?php echo base_url(); ?>assets/frontend/js/jquery.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url(); ?>assets/frontend/js/bootstrap.js" type="text/javascript"></script>
         <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-        
+
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/frontend/js/jRating.jquery.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+
+                $('.exemple3').jRating({
+                    step: true,
+                    length: 5
+                });
+
+
+            });
+        </script>
     </head>
 
     <body>
 
         <div class="container-fluid">
-            <div class="row">
-
+            <div class="row">                
                 <?php $this->load->view('users/include/inner_category_dropdown.php'); ?>  
 
             </div>
@@ -37,16 +49,17 @@
 
                     <div class="col-lg-4 product_heading">
                         <aside class="preview">
-                            <img id="main" src="<?php echo base_url(); ?>images/products/headphone.jpg" alt="Alt title of image" >
+                            <img id="main" src="<?php echo base_url(); ?>images/products/<?php echo $product_details->thumb_image;?>" alt="Alt title of image" >
                                 <div class="thumb">
-                                    <a href="<?php echo base_url(); ?>images/products/headphone.jpg"><img src="<?php echo base_url(); ?>images/products/headphone.jpg" width="91" height="73" alt="Headphone"></a>
-                                    <a href="<?php echo base_url(); ?>images/products/headphonetwo.jpg"><img src="<?php echo base_url(); ?>images/products/headphonetwo.jpg" width="91" height="73" alt="Headphone2"></a>		
+                                    <a href="<?php echo base_url(); ?>images/products/<?php echo $product_details->image;?>"><img src="<?php echo base_url(); ?>images/products/headphone.jpg" width="91" height="73" alt="Headphone"></a>
+                                    <a href="<?php echo base_url(); ?>images/products/<?php echo $product_details->thumb_image;?>"><img src="<?php echo base_url(); ?>images/products/headphonetwo.jpg" width="91" height="73" alt="Headphone2"></a>		
                                 </div>
                         </aside>
                     </div>
                     <div class="col-lg-8 filter">
                         <div class="col-lg-9 less_pad">
-                            <h1>Headphones HD 215</h1>
+                            <h1><?php //print_r($product_details); 
+                            echo $product_details->name; ?><!--Headphones HD 215--></h1>
                             <ul>
                                 <li>
                                     <label class="checkbox-inline">
@@ -80,7 +93,7 @@
                                     Color(s): <span>Black</span>
                                 </div>
                                 <div class="product_detail">
-                                    MSRP: <span>$ 1350</span>
+                                    MSRP: <span>$ <?php echo $product_details->price;?></span>
                                 </div>
                                 <div class="clearfix"></div>
 
@@ -89,7 +102,7 @@
                                         <div class="detail_smart_rating">
                                             <p>Smart Rating</p>
                                             <div class="detail_smart_rating_box">
-                                                40
+                                                <?php echo $avg_review->totalrate; ?>
                                             </div>
                                             <div style="clear:both; display:none;"><a href="#" class="what">What's This ?</a></div>
                                         </div>
@@ -97,11 +110,15 @@
                                     <div class="col-lg-6 less_pad">
                                         <div class="detail_review_rating">
                                             <p>Add Your Ratings</p>
+                                            <?php $var=$this->session->userdata('userdata');
+                                            print_r($var);
+                                            ?>
                                             <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />
                                             <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />
                                             <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />
                                             <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />
                                             <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />
+
                                         </div>
                                     </div>
                                 </div>
@@ -273,134 +290,124 @@
                             <h2>Review</h2>
 
                             <h3>Experts Say</h3>
-                            <div class="review_list">
-                                <h4>PC Mag Rating</h4>
-                                <div class="review_list_rating">
-                                    <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />
-                                    <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />
-                                    <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />
-                                    <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />
-                                    <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />
-                                    <div>5.0</div>
+                            <?php foreach ($review_details as $reviews) { ?>
+                                <div class="review_list">
+                                    <h4><?php echo $reviews->name ?></h4>                                
+                                    <div class="review_list_rating"> 
+                                        <?php for ($i = 1; $i <= ($reviews->rate); $i++) { ?>
+                                            <img src="<?php echo base_url(); ?>assets/img/review_active_ico.png" alt="Review" class="img-responsive" />                                   
+                                        <?php } ?>
+                                        <?php for ($j = 1; $j <= 5 - ($reviews->rate); $j++) { ?>
+                                            <img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" />                                   
+                                         <?php } ?>
+                                        <div><?php echo $reviews->rate . '.0'; ?></div>
+                                    </div>
+                                    <p>
+                                    <?php echo $reviews->review; ?>
+                                    </p>
+                                    <a href="<?php echo base_url(); ?>home/reviewDetails" class="more">Read more at PC Mag</a>
+                                    <div class="clearfix"></div>
                                 </div>
-
-                                <p>
-                                    With six drivers in each ear giving equal, loving attention to the details of the entire frequency range, in-ear sound quality may have reached its apex: the outrageously priced Ultimate Ears UE 18 Pro earphones are a sonic masterpiece.
-                                </p>
-
-                                <a href="#" class="more">Read more at PC Mag</a>
-
-                                <div class="clearfix"></div>
-                            </div>
-
+                            <?php } ?>
                             <div class="post_review_head">
                                 <img src="<?php echo base_url(); ?>images/products/headphone.jpg" alt="Headphone" width="30px" height="30px" />
-                                Review Ultimate Ears UE 18 Pro
+                                Review <?php echo $product_details->name; ?>
                             </div>
-                            <div class="rate_this">
-                                Rate this Headphone
-                                <div id="rrrrr">
-                                    <a href="#"><img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" /></a>
-                                    <a href="#"><img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" /></a>
-                                    <a href="#"><img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" /></a>
-                                    <a href="#"><img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" /></a>
-                                    <a href="#"><img src="<?php echo base_url(); ?>assets/img/review_ico.png" alt="Review" class="img-responsive" /></a>
-                                </div>
-                                <span>Click stars to rate</span>
-                            </div>
+                            <form class="form-horizontal" role="form" action="" method="post">
+                                <div class="rate_this">
+                                    Rate this <?php echo $product_details->name; ?>
+                                    <div id="rating">
 
-                            <div class="col-lg-12 less_pad">
-                                <form class="form-horizontal" role="form" action="" method="post">
+                                        <div class="exemple3" data-average="18" data-id="3"></div>
+                                        <div class="datasSent" style="display:none;">	
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <span>Click stars to rate</span>
+                                </div>
+
+                                <div class="col-lg-12 less_pad">
+
                                     <div class="form-group">
                                         <label for="inputEmail3" class="col-sm-2 control-label">Write your review</label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" rows="5" style="resize:none;"></textarea>
+                                            <textarea class="form-control" name="review" rows="5" style="resize:none;"></textarea>
                                         </div>
                                     </div>
 
-                                    <button class="price_btn pull-right" type="button">Post Review</button>
+                                    <button class="price_btn pull-right" type="submit">Post Review</button>
 
-                                </form>
-                            </div>
-
-                            <div class="clearfix"></div>
+                            </form>
                         </div>
+
                         <div class="clearfix"></div>
                     </div>
-
-
+                    <div class="clearfix"></div>
                 </div>
+            </div>
 
-
-
-                <div class="col-lg-12 related_topics">
-                    <h3>Related Topics</h3>
-                    <div id="carousel-example-generic" class="carousel slide carousel_innerpage" data-ride="carousel">
-                        <!-- Indicators -->
-                        <!--<ol class="carousel-indicators">
-                          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                        </ol>-->
-
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-                            <div class="item active">
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product1.png" alt="Related Products" class="img-responsive" />
-                                    <p>Laptop and Notebooks</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product2.png" alt="Related Products" class="img-responsive" />
-                                    <p>Digital Pianos and Keyboards</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product3.png" alt="Related Products" class="img-responsive" />
-                                    <p>Tablets</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product4.png" alt="Related Products" class="img-responsive" />
-                                    <p>Mp3 Players</p>
-                                </div>
-                                <div class="clearfix"></div>
+            <div class="col-lg-12 related_topics">
+                <h3>Related Topics</h3>
+                <div id="carousel-example-generic" class="carousel slide carousel_innerpage" data-ride="carousel">
+                 
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product1.png" alt="Related Products" class="img-responsive" />
+                                <p>Laptop and Notebooks</p>
                             </div>
-
-
-                            <div class="item">
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product1.png" alt="Related Products" class="img-responsive" />
-                                    <p>Laptop and Notebooks</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product2.png" alt="Related Products" class="img-responsive" />
-                                    <p>Digital Pianos and Keyboards</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product3.png" alt="Related Products" class="img-responsive" />
-                                    <p>Tablets</p>
-                                </div>
-                                <div class="col-lg-3 related_pro">
-                                    <img src="<?php echo base_url(); ?>assets/img/related_product4.png" alt="Related Products" class="img-responsive" />
-                                    <p>Mp3 Players</p>
-                                </div>
-                                <div class="clearfix"></div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product2.png" alt="Related Products" class="img-responsive" />
+                                <p>Digital Pianos and Keyboards</p>
                             </div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product3.png" alt="Related Products" class="img-responsive" />
+                                <p>Tablets</p>
+                            </div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product4.png" alt="Related Products" class="img-responsive" />
+                                <p>Mp3 Players</p>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
 
-                        <!-- Controls -->
-                        <a class="left carousel-control related_topics_arrow" href="#carousel-example-generic" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control related_topics_arrow" href="#carousel-example-generic" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
+                        <div class="item">
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product1.png" alt="Related Products" class="img-responsive" />
+                                <p>Laptop and Notebooks</p>
+                            </div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product2.png" alt="Related Products" class="img-responsive" />
+                                <p>Digital Pianos and Keyboards</p>
+                            </div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product3.png" alt="Related Products" class="img-responsive" />
+                                <p>Tablets</p>
+                            </div>
+                            <div class="col-lg-3 related_pro">
+                                <img src="<?php echo base_url(); ?>assets/img/related_product4.png" alt="Related Products" class="img-responsive" />
+                                <p>Mp3 Players</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="left carousel-control related_topics_arrow" href="#carousel-example-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control related_topics_arrow" href="#carousel-example-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
             </div>
+
+            <div class="clearfix"></div>
+        </div>
         </div>
 
 
@@ -446,12 +453,7 @@
 
 
 <script type="text/javascript">
-
-
-
 ///////////////Gallery Part////////////////
-
-
     $(document).ready(function() {
         $("aside.preview div").show();
         var previewImg = $("img#main");
@@ -528,10 +530,10 @@
                 nav.css({
                     position: 'fixed',
                     top: 0,
-                   left: nav.offset().left,
+                    left: nav.offset().left,
                     width: nav.width(),
-                    'background-color':'#ccc'
-                    
+                    'background-color': '#ccc'
+
                 });
                 isFixed = true;
             }
@@ -542,6 +544,14 @@
                 });
                 isFixed = false;
             }
+        });
+    });
+
+
+    $(document).ready(function() {
+
+        $('#reone').click(function(val) {
+
         });
     });
 
