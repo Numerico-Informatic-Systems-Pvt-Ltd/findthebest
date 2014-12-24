@@ -21,25 +21,36 @@ class Attribute extends CI_Controller {
           } */
     }
 
-    public function manageAttribute($id = 0){
-        $response = false;
-       if($id){
-        $data['attr_data'] = $this->attribute_model->get_attribute_by_id($id);
-       }
+//    public function manageAttribute($id = 0){
+//        $response = false;
+//       if($id){
+//        $data['attr_data'] = $this->attribute_model->get_attribute_by_id($id);
+//       }
+//        $seesion_details = $this->session->userdata('admin');
+//        $data['attribute']= $this->attribute_model->get_attributes();
+//        if($this->input->post()){
+//            $attr = $attrs = $this->input->post('new_attribute');
+//            $attrs = $this->input->post('new_attribute');
+//            if($this->input->post('id')){
+//                $response = $this->attribute_model->manage_attribute($id,$attrs);
+//            }else{
+//                $response = $this->attribute_model->manage_attribute($id=null,$attrs);
+//            }
+//        }
+//        if($response){
+//            redirect("attribute/manageAttribute");
+//        }
+//        $this->load->view('admin/manage_attribute',$data);
+//    }
+    public function manageAttributevalues($id = null){
         $seesion_details = $this->session->userdata('admin');
-        $data['attribute']= $this->attribute_model->get_attributes();
+        $data['attribute'] = $this->attribute_model->get_defined_attributes();
         if($this->input->post()){
-            $attrs = $this->input->post();
-            if($this->input->post('id')){
-                $response = $this->attribute_model->manage_attribute($id,$attrs);
-            }else{
-                $response = $this->attribute_model->manage_attribute($id=null,$attrs);
-            }
+            //echo"<pre>";print_r($this->input->post());exit;
+            $inputs = $this->input->post();
+            $this->attribute_model->manage_attribute_value($id,$inputs);
         }
-        if($response){
-            redirect("attribute/manageAttribute");
-        }
-        $this->load->view('admin/manage_attribute',$data);
+        $this->load->view('admin/manage_attribute_values',$data);
     }
     public function deleteAttribute(){
 
@@ -69,7 +80,7 @@ class Attribute extends CI_Controller {
     }
     public function manageAttributevalues($id = null){
         $seesion_details = $this->session->userdata('admin');
-        $data['attribute'] = $this->attribute_model->get_defined_attributes();
+        $data['attribute'] = $this->attribute_model->get_attributes();
         if($this->input->post()){
             //echo"<pre>";print_r($this->input->post());exit;
             $inputs = $this->input->post();

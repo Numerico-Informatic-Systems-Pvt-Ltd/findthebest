@@ -13,8 +13,15 @@ class logout extends CI_Controller {
 	{
 	    $this->session->unset_userdata('admin');
 	    $this->session->sess_destroy();
-		redirect('login');	
+            redirect('login');	
 	}
+        
+        public function UserLogout(){
+            $pagelink=$_GET['pagelink'];            
+            $this->session->unset_userdata('userdata');
+	    $this->session->sess_destroy();         
+            redirect($pagelink);	
+        }
 }
 
 /* End of file welcome.php */

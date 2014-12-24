@@ -38,7 +38,7 @@
     <!-- END BEGIN STYLE CUSTOMIZER -->  
     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
     <h3 class="page-title">
-        <?php echo $this->lang->line("manage"); ?> <?php echo $this->lang->line("attribute"); ?> <small><?php echo $this->lang->line("manage"); ?> <?php echo $this->lang->line("attribute"); ?></small>
+        <?php echo $this->lang->line("add"); ?> <?php echo $this->lang->line("attribute"); ?> <small><?php echo $this->lang->line("add"); ?> <?php echo $this->lang->line("attribute"); ?></small>
     </h3>
     <ul class="breadcrumb">
         <li>
@@ -50,7 +50,7 @@
             <a href="#"><?php echo $this->lang->line("attribute"); ?></a>
             <i class="icon-angle-right"></i>
         </li>
-        <li><a href="<?php site_url('category'); ?>"><?php echo $this->lang->line("manage"); ?> <?php echo $this->lang->line("attribute"); ?></a></li>
+        <li><a href="<?php site_url('category'); ?>"><?php echo $this->lang->line("add"); ?> <?php echo $this->lang->line("attribute"); ?></a></li>
     </ul>
     <!-- END PAGE TITLE & BREADCRUMB-->
 </div>
@@ -79,7 +79,7 @@
         <!-- BEGIN SAMPLE FORM PORTLET-->   
         <div class="portlet box green">
             <div class="portlet-title">
-                <div class="caption"><i class="icon-asterisk"></i><?php echo $this->lang->line("manage"); ?> <?php echo $this->lang->line("attribute"); ?></div>
+                <div class="caption"><i class="icon-asterisk"></i><?php echo $this->lang->line("add"); ?> <?php echo $this->lang->line("attribute"); ?></div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse"></a>
                     <a href="javascript:;" class="reload"></a>

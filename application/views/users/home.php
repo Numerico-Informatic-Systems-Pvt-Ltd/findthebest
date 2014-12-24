@@ -68,7 +68,8 @@
               </button>
               <!--<a href="#" class="navbar-brand">Project name</a>-->
             </div>
-           
+           <?php $this->load->view('users/include/userjoin.php'); ?> 
+            <?php $this->load->view('users/include/usersignin.php'); ?> 
             <?php $this->load->view('users/include/category_dropdown.php'); ?>
             <!--/.nav-collapse -->
           </div>
